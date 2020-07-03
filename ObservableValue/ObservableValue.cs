@@ -6,7 +6,7 @@ using Open.Threading;
 
 namespace Open.Observable
 {
-	public sealed class ObservableValue<T> : SubjectBase<T>, IEquatable<T>
+	public sealed class ObservableValue<T> : SubjectBase<T>, IObservableValue<T>, IEquatable<T>
 	{
 		#region Constructors
 		/// <summary>
@@ -15,6 +15,7 @@ namespace Open.Observable
 		public ObservableValue()
 		{
 			_subject = new Subject<T>();
+			_readOnly = new Lazy<IObservableValue<T>>(() => new ReadOnlyObservableValue(this), false);
 			Sync = new Lazy<ReaderWriterLockSlim>(() => new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion), true);
 		}
 
@@ -56,6 +57,9 @@ namespace Open.Observable
 		/// True if the value has been initialzed.
 		/// </summary>
 		public bool IsInitialized { get; private set; }
+
+		private readonly Lazy<IObservableValue<T>> _readOnly;
+		public IObservableValue<T> AsReadOnly() => _readOnly.Value;
 
 		public void ReadSyncronized(Action<T> reader) => Sync.Value.Read(() => reader(_value));
 
@@ -180,6 +184,22 @@ namespace Open.Observable
 		{
 			if (o is null) throw new ArgumentNullException(nameof(o));
 			return o.Value;
+		}
+
+		class ReadOnlyObservableValue : IObservableValue<T>
+		{
+			private readonly ObservableValue<T> _source;
+
+			public ReadOnlyObservableValue(ObservableValue<T> source)
+			{
+				_source = source;
+			}
+
+			public T Value => _source.Value;
+
+			public bool IsInitialized => _source.IsInitialized;
+
+			public IDisposable Subscribe(IObserver<T> observer) => _source.Subscribe(observer);
 		}
 	}
 

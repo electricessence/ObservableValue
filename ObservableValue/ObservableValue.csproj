@@ -16,7 +16,7 @@ Compatible with IObservable&lt;T&gt; and System.Reactive.	</Description>
 		<RepositoryType>git</RepositoryType>
 		<PackageTags>observable; observer; iobservable; iobserver; reactive; reactivex; system.reactive; observable value;</PackageTags>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>1.1.1</Version>
+		<Version>1.2.0</Version>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageReleaseNotes></PackageReleaseNotes>
 		<RepositoryUrl>https://github.com/electricessence/ObservableValue</RepositoryUrl>
