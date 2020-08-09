@@ -2,7 +2,8 @@
 
 [![NuGet](https://img.shields.io/nuget/v/ObservableValue.svg)](https://www.nuget.org/packages/ObservableValue/)
 
-A simple synchronized observable (`IObservable<T>`) that when its value is updated (value changes), its observers are notified.
+A simple observable (`IObservable<T>`) that when its value is updated (value changes), its observers are notified.  
+Will post current value (if initialized) when subscribing.  Synchronized to ensure ordering.
 
 `System.Reactive` is included and can be used to extend its behavior.
 
